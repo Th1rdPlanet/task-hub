@@ -1,4 +1,4 @@
-name: Website request
+name: Запрос по сайту
 description: Сообщить о проблеме сайта или предложить изменение
 title: "[Website]: "
 labels: [needs-triage]
@@ -28,4 +28,3 @@ body:
     id: references
     attributes:
       label: Скриншоты или примеры
-

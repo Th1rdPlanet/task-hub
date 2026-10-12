@@ -1,4 +1,4 @@
-name: Suggest an idea
+name: Предложить идею
 description: Предложить новую возможность или улучшение
 title: "[Idea]: "
 labels: [needs-triage, enhancement]
@@ -29,4 +29,3 @@ body:
     id: audience
     attributes:
       label: Кому это поможет?
-

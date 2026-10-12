@@ -1,4 +1,4 @@
-name: Other / destination unknown
+name: Другое / направление неизвестно
 description: Запрос, для которого пока непонятно направление
 title: "[Request]: "
 labels: [needs-triage]

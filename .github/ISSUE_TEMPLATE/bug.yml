@@ -1,4 +1,4 @@
-name: Report a bug
+name: Сообщить о баге
 description: Сообщить о наблюдаемой проблеме
 title: "[Bug]: "
 labels: [needs-triage, bug]
@@ -29,4 +29,3 @@ body:
     attributes:
       label: Время и сервер или окружение
       description: Укажите приблизительно, не добавляя IP или персональные данные.
-

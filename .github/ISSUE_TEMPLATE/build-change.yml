@@ -1,4 +1,4 @@
-name: Request a server-build change
+name: Изменить серверную сборку
 description: Изменить конфигурацию, плагин или состав серверной сборки
 title: "[Build]: "
 labels: [needs-triage]
@@ -29,4 +29,3 @@ body:
       label: Как проверить результат?
     validations:
       required: true
-
