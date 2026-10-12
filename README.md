@@ -15,3 +15,4 @@
 - Не публикуйте пароли, токены, приватные ключи, персональные данные и закрытые логи.
 - Для уязвимостей используйте [приватный security report](https://github.com/Th1rdPlanet/task-hub/security/advisories/new).
 - Технический процесс описан в [docs/workflow.md](docs/workflow.md).
+- Автоматизация и ограничения описаны в [docs/project-automation.md](docs/project-automation.md).
