@@ -1,0 +1,31 @@
+name: Website request
+description: Сообщить о проблеме сайта или предложить изменение
+title: "[Website]: "
+labels: [needs-triage]
+body:
+  - type: markdown
+    attributes:
+      value: "Не публикуйте пароли, токены, ключи, персональные данные или закрытые логи."
+  - type: input
+    id: page
+    attributes:
+      label: Страница или сценарий
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: Что происходит сейчас?
+    validations:
+      required: true
+  - type: textarea
+    id: desired
+    attributes:
+      label: Что должно происходить?
+    validations:
+      required: true
+  - type: textarea
+    id: references
+    attributes:
+      label: Скриншоты или примеры
+

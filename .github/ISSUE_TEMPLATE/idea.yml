@@ -1,0 +1,32 @@
+name: Suggest an idea
+description: Предложить новую возможность или улучшение
+title: "[Idea]: "
+labels: [needs-triage, enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: "Не публикуйте пароли, токены, ключи, персональные данные или закрытые логи."
+  - type: textarea
+    id: change
+    attributes:
+      label: Что нужно изменить?
+      description: Опишите идею обычными словами; выбирать репозиторий не нужно.
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Какую проблему это решает?
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Как выглядит успешный результат?
+    validations:
+      required: true
+  - type: input
+    id: audience
+    attributes:
+      label: Кому это поможет?
+

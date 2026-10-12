@@ -1,0 +1,32 @@
+name: Report a bug
+description: Сообщить о наблюдаемой проблеме
+title: "[Bug]: "
+labels: [needs-triage, bug]
+body:
+  - type: markdown
+    attributes:
+      value: "Не публикуйте пароли, токены, ключи, персональные данные или закрытые логи."
+  - type: textarea
+    id: actual
+    attributes:
+      label: Что произошло?
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Что ожидалось?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Как повторить проблему?
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Время и сервер или окружение
+      description: Укажите приблизительно, не добавляя IP или персональные данные.
+
