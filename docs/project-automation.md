@@ -19,7 +19,7 @@ GitHub Action каждые пять минут переносит рабочий
 
 | Status | Label |
 | --- | --- |
-| `Inbox`, `Triage` | `на рассмотрении` |
+| `Inbox`, `Triage` | `needs-triage` |
 | `Ready` | `готово к работе` |
 | `In Progress` | `в работе` |
 | `Review` | `ревью` |

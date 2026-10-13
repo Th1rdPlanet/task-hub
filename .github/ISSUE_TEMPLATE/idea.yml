@@ -1,7 +1,7 @@
 name: Предложить идею
 description: Предложить новую возможность или улучшение
 title: "[Idea]: "
-labels: [на рассмотрении, enhancement]
+labels: [needs-triage, enhancement]
 body:
   - type: markdown
     attributes:

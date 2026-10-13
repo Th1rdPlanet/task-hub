@@ -9,8 +9,8 @@ import {
 
 test('maps every Project status to its issue lifecycle label', () => {
   const cases = [
-    ['Inbox', 'на рассмотрении'],
-    ['Triage', 'на рассмотрении'],
+    ['Inbox', 'needs-triage'],
+    ['Triage', 'needs-triage'],
     ['Ready', 'готово к работе'],
     ['In Progress', 'в работе'],
     ['Review', 'ревью'],
@@ -23,6 +23,19 @@ test('maps every Project status to its issue lifecycle label', () => {
   for (const [status, expected] of cases) {
     assert.equal(desiredLifecycle(status), expected, status);
   }
+});
+
+test('replaces the legacy Russian triage label with needs-triage', () => {
+  const plan = planIssueChanges({
+    status: 'Triage',
+    comments: [],
+    labels: ['на рассмотрении', 'bug'],
+    state: 'OPEN',
+    projectItemId: 'PVTI_triage',
+  });
+
+  assert.deepEqual(plan.addLabels, ['needs-triage']);
+  assert.deepEqual(plan.removeLabels, ['на рассмотрении']);
 });
 
 test('distinguishes unknown statuses from Done', () => {
@@ -83,12 +96,13 @@ test('uses an existing issue reason without posting a duplicate comment', () => 
     status: 'Rejected',
     projectReason: '',
     comments: [{ body: 'Причина отклонения: уже объяснили' }],
-    labels: ['на рассмотрении'],
+    labels: ['needs-triage'],
     state: 'OPEN',
     projectItemId: 'PVTI_124',
   });
 
   assert.equal(plan.comment, null);
+  assert.deepEqual(plan.removeLabels, ['needs-triage']);
   assert.equal(plan.state, 'closed');
   assert.equal(plan.stateReason, 'not_planned');
 });

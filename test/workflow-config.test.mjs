@@ -18,12 +18,12 @@ test('workflow exposes scheduled and manual synchronization with guarded executi
   assert.match(source, /run:\s*node scripts\/sync-project-status\.mjs/);
 });
 
-test('every intake form starts with the Russian triage label', async () => {
+test('every intake form starts with needs-triage without a duplicate Russian label', async () => {
   const forms = ['bug.yml', 'build-change.yml', 'idea.yml', 'other.yml', 'website.yml'];
 
   for (const form of forms) {
     const source = await readFile(new URL(`../.github/ISSUE_TEMPLATE/${form}`, import.meta.url), 'utf8');
-    assert.match(source, /^labels:\s*\[на рассмотрении(?:,|\])/m, form);
-    assert.doesNotMatch(source, /needs-triage/, form);
+    assert.match(source, /^labels:\s*\[needs-triage(?:,|\])/m, form);
+    assert.doesNotMatch(source, /на рассмотрении/, form);
   }
 });

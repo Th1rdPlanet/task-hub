@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 
 export const LABEL_DEFINITIONS = Object.freeze({
-  'на рассмотрении': Object.freeze({ color: 'D4C5F9', description: 'Запрос ожидает рассмотрения' }),
+  'needs-triage': Object.freeze({ color: 'D4C5F9', description: 'Запрос ожидает рассмотрения' }),
   'готово к работе': Object.freeze({ color: '0E8A16', description: 'Задача готова к выполнению' }),
   'в работе': Object.freeze({ color: '1D76DB', description: 'Задача выполняется' }),
   'ревью': Object.freeze({ color: '5319E7', description: 'Ожидает ревью кода или конфигурации' }),
@@ -10,11 +10,14 @@ export const LABEL_DEFINITIONS = Object.freeze({
   rejected: Object.freeze({ color: 'B60205', description: 'Задача отклонена' }),
 });
 
-export const LIFECYCLE_LABELS = Object.freeze(Object.keys(LABEL_DEFINITIONS));
+export const LIFECYCLE_LABELS = Object.freeze([
+  ...Object.keys(LABEL_DEFINITIONS),
+  'на рассмотрении',
+]);
 
 const STATUS_TO_LABEL = Object.freeze({
-  Inbox: 'на рассмотрении',
-  Triage: 'на рассмотрении',
+  Inbox: 'needs-triage',
+  Triage: 'needs-triage',
   Ready: 'готово к работе',
   'In Progress': 'в работе',
   Review: 'ревью',
