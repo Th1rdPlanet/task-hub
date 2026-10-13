@@ -25,9 +25,29 @@ test('maps every Project status to its issue lifecycle label', () => {
   }
 });
 
-test('does not invent a label for an unknown or absent status', () => {
-  assert.equal(desiredLifecycle('Unknown'), null);
-  assert.equal(desiredLifecycle(null), null);
+test('distinguishes unknown statuses from Done', () => {
+  assert.equal(desiredLifecycle('Unknown'), undefined);
+  assert.equal(desiredLifecycle(null), undefined);
+  assert.equal(desiredLifecycle('Done'), null);
+});
+
+test('leaves an issue untouched for an unknown Project status', () => {
+  const plan = planIssueChanges({
+    status: 'Unknown',
+    comments: [],
+    labels: ['в работе', 'blocked'],
+    state: 'CLOSED',
+    stateReason: 'NOT_PLANNED',
+    projectItemId: 'PVTI_unknown',
+  });
+
+  assert.deepEqual(plan, {
+    addLabels: [],
+    removeLabels: [],
+    state: null,
+    stateReason: null,
+    comment: null,
+  });
 });
 
 test('extracts only the latest explicitly prefixed rejection reason', () => {

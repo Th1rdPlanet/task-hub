@@ -43,4 +43,4 @@ Label `rejected` ставится всегда. Причину можно зап
 
 ### Доступ автоматизации
 
-Repository secret `PROJECT_SYNC_TOKEN` содержит fine-grained token пользователя `1VicTim1`. Токену нужны `Projects: read` для организации, `Issues: read and write` для подключённых репозиториев и `Metadata: read`. Workflow имеет только `contents: read`; токен не выводится в лог.
+Repository secret `PROJECT_SYNC_TOKEN` сейчас содержит OAuth-токен GitHub CLI пользователя `1VicTim1`. При будущей ротации можно использовать OAuth-токен с доступом к Project и Issues либо fine-grained token с `Projects: read` для организации, `Issues: read and write` для подключённых репозиториев и `Metadata: read`. Workflow имеет только `contents: read`; токен не выводится в лог.

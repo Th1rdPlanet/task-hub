@@ -25,7 +25,8 @@ const STATUS_TO_LABEL = Object.freeze({
 });
 
 export function desiredLifecycle(status) {
-  return STATUS_TO_LABEL[status] ?? null;
+  if (!Object.hasOwn(STATUS_TO_LABEL, status)) return undefined;
+  return STATUS_TO_LABEL[status];
 }
 
 export function extractIssueReason(comments = []) {
@@ -55,6 +56,15 @@ export function planIssueChanges(input) {
     projectItemId,
   } = input;
   const desiredLabel = desiredLifecycle(status);
+  if (desiredLabel === undefined) {
+    return {
+      addLabels: [],
+      removeLabels: [],
+      state: null,
+      stateReason: null,
+      comment: null,
+    };
+  }
   const addLabels = desiredLabel && !labels.includes(desiredLabel) ? [desiredLabel] : [];
   const removeLabels = labels.filter(
     (label) => LIFECYCLE_LABELS.includes(label) && label !== desiredLabel,

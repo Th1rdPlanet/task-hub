@@ -13,13 +13,17 @@ const PROJECT_ITEMS_QUERY = `
             content {
               __typename
               ... on Issue {
+                id
                 number
                 url
                 state
                 stateReason
                 repository { name owner { login } }
                 labels(first: 100) { nodes { name } }
-                comments(last: 100) { nodes { body } }
+                comments(last: 100) {
+                  nodes { body }
+                  pageInfo { hasPreviousPage startCursor }
+                }
               }
             }
             fieldValues(first: 50) {
@@ -37,6 +41,19 @@ const PROJECT_ITEMS_QUERY = `
             }
           }
           pageInfo { hasNextPage endCursor }
+        }
+      }
+    }
+  }
+`;
+
+const ISSUE_COMMENTS_QUERY = `
+  query IssueComments($id: ID!, $cursor: String) {
+    node(id: $id) {
+      ... on Issue {
+        comments(last: 100, before: $cursor) {
+          nodes { body }
+          pageInfo { hasPreviousPage startCursor }
         }
       }
     }
@@ -63,6 +80,23 @@ function fieldValue(item, fieldName) {
   return value?.name ?? value?.text ?? null;
 }
 
+async function completeIssueComments(client, issue) {
+  let comments = issue.comments?.nodes ?? [];
+  let cursor = issue.comments?.pageInfo?.hasPreviousPage
+    ? issue.comments.pageInfo.startCursor
+    : null;
+
+  while (cursor) {
+    const data = await client.graphql(ISSUE_COMMENTS_QUERY, { id: issue.id, cursor });
+    const page = data?.node?.comments;
+    if (!page) throw new Error(`Comments for issue ${issue.url} were not found`);
+    comments = [...page.nodes, ...comments];
+    cursor = page.pageInfo.hasPreviousPage ? page.pageInfo.startCursor : null;
+  }
+
+  return comments;
+}
+
 export async function syncIssue(client, item) {
   if (item.content?.__typename !== 'Issue') {
     return { changed: false, skipped: true, reason: 'not-an-issue' };
@@ -76,10 +110,13 @@ export async function syncIssue(client, item) {
   const issue = item.content;
   const owner = issue.repository.owner.login;
   const repository = issue.repository.name;
+  const comments = status === 'Rejected'
+    ? await completeIssueComments(client, issue)
+    : issue.comments.nodes;
   const plan = planIssueChanges({
     status,
     projectReason: fieldValue(item, 'Причина решения'),
-    comments: issue.comments.nodes,
+    comments,
     labels: issue.labels.nodes.map(({ name }) => name),
     state: issue.state,
     stateReason: issue.stateReason,

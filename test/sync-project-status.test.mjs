@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import { syncIssue, synchronizeProject } from '../scripts/sync-project-status.mjs';
+import { planIssueChanges } from '../scripts/status-policy.mjs';
 
 function issueItem({
   id = 'PVTI_1',
@@ -9,6 +10,7 @@ function issueItem({
   reason = null,
   labels = [],
   comments = [],
+  commentsPageInfo = { hasPreviousPage: false, startCursor: null },
   state = 'OPEN',
   stateReason = null,
   typename = 'Issue',
@@ -30,13 +32,14 @@ function issueItem({
       typename === 'Issue'
         ? {
             __typename: 'Issue',
+            id: 'I_3',
             number: 3,
             url: 'https://github.com/Th1rdPlanet/task-hub/issues/3',
             state,
             stateReason,
             repository: { name: 'task-hub', owner: { login: 'Th1rdPlanet' } },
             labels: { nodes: labels.map((name) => ({ name })) },
-            comments: { nodes: comments.map((body) => ({ body })) },
+            comments: { nodes: comments.map((body) => ({ body })), pageInfo: commentsPageInfo },
           }
         : { __typename: typename },
     fieldValues: { nodes: fieldValues },
@@ -154,6 +157,74 @@ test('closes Rejected from an issue comment without posting another comment', as
     'closed',
     'not_planned',
   ]);
+});
+
+test('reads older comment pages before deciding whether Rejected has a reason', async () => {
+  const client = recordingClient();
+  client.graphql = async (_query, variables) => {
+    assert.deepEqual(variables, { id: 'I_3', cursor: 'page-2-start' });
+    return {
+      node: {
+        comments: {
+          nodes: [{ body: 'Причина отклонения: объяснили давно' }],
+          pageInfo: { hasPreviousPage: false, startCursor: null },
+        },
+      },
+    };
+  };
+
+  await syncIssue(
+    client,
+    issueItem({
+      status: 'Rejected',
+      labels: ['rejected'],
+      comments: Array.from({ length: 100 }, (_, index) => `Новое обсуждение ${index}`),
+      commentsPageInfo: { hasPreviousPage: true, startCursor: 'page-2-start' },
+    }),
+  );
+
+  assert.equal(client.calls.some(([name]) => name === 'addComment'), false);
+  assert.deepEqual(client.calls.at(-1), [
+    'setIssueState',
+    'Th1rdPlanet',
+    'task-hub',
+    3,
+    'closed',
+    'not_planned',
+  ]);
+});
+
+test('reads older comment pages before posting a repeated automated rejection comment', async () => {
+  const client = recordingClient();
+  const oldComment = planIssueChanges({
+    status: 'Rejected',
+    projectReason: 'Не входит в планы',
+    comments: [],
+    labels: [],
+    state: 'OPEN',
+    projectItemId: 'PVTI_1',
+  }).comment.body;
+  client.graphql = async () => ({
+    node: {
+      comments: {
+        nodes: [{ body: oldComment }],
+        pageInfo: { hasPreviousPage: false, startCursor: null },
+      },
+    },
+  });
+
+  await syncIssue(
+    client,
+    issueItem({
+      status: 'Rejected',
+      reason: 'Не входит в планы',
+      labels: ['rejected'],
+      comments: Array.from({ length: 100 }, (_, index) => `Новое обсуждение ${index}`),
+      commentsPageInfo: { hasPreviousPage: true, startCursor: 'page-2-start' },
+    }),
+  );
+
+  assert.equal(client.calls.some(([name]) => name === 'addComment'), false);
 });
 
 test('continues after one item fails and returns a failing summary', async () => {
