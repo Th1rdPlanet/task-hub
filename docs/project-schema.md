@@ -18,3 +18,11 @@ Project: [Th1rdPlanet — Development Hub](https://github.com/orgs/Th1rdPlanet/p
 ## Связанные репозитории
 
 `task-hub`, `eSCore`, `ExiledAssembly`, `ExiledProxyBuild`, `newera-sync`, `thenewera`.
+
+## Основные представления
+
+- `Разбор` сгруппирован по полю `Направление`.
+- `К выполнению` и `По репозиториям` сгруппированы по `Repository`.
+- Доски разработки сгруппированы по `Status`.
+- `Сборка и проверка` показывает работу направления `Assembly`.
+- `Ожидает проверки` отдельно показывает все задачи в `Ready for Verification`, включая другие направления.

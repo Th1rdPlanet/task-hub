@@ -29,3 +29,5 @@ body:
     attributes:
       label: Время и сервер или окружение
       description: Укажите приблизительно, не добавляя IP или персональные данные.
+    validations:
+      required: true

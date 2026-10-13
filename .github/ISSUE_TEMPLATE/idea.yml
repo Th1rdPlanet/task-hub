@@ -29,3 +29,5 @@ body:
     id: audience
     attributes:
       label: Кому это поможет?
+    validations:
+      required: true

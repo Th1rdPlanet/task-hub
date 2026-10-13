@@ -1,9 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Private security report
+  - name: Приватное сообщение об уязвимости
     url: https://github.com/Th1rdPlanet/task-hub/security/advisories/new
     about: Уязвимости, секреты и приватные данные отправляйте только сюда.
-  - name: Workflow guide
+  - name: Как устроен процесс
     url: https://github.com/Th1rdPlanet/task-hub/blob/master/docs/workflow.md
     about: Как запрос проходит от идеи до проверки.
-
