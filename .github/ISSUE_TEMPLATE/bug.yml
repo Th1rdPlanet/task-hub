@@ -1,7 +1,7 @@
 name: Сообщить о баге
 description: Сообщить о наблюдаемой проблеме
 title: "[Bug]: "
-labels: [needs-triage, bug]
+labels: [на рассмотрении, bug]
 body:
   - type: markdown
     attributes:

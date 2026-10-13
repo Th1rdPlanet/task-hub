@@ -1,7 +1,7 @@
 name: Другое / направление неизвестно
 description: Запрос, для которого пока непонятно направление
 title: "[Request]: "
-labels: [needs-triage]
+labels: [на рассмотрении]
 body:
   - type: markdown
     attributes:

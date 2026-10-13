@@ -1,7 +1,7 @@
 name: Изменить серверную сборку
 description: Изменить конфигурацию, плагин или состав серверной сборки
 title: "[Build]: "
-labels: [needs-triage]
+labels: [на рассмотрении]
 body:
   - type: markdown
     attributes:

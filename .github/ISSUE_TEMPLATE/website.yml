@@ -1,7 +1,7 @@
 name: Запрос по сайту
 description: Сообщить о проблеме сайта или предложить изменение
 title: "[Website]: "
-labels: [needs-triage]
+labels: [на рассмотрении]
 body:
   - type: markdown
     attributes:
